@@ -1,0 +1,51 @@
+// First, apply the publishing plugin
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.10"
+    }
+}
+
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: 'groovy'
+// Apply other plugins here, e.g. java plugin for a plugin written in java or
+// the groovy plugin for a plugin written in groovy
+
+// If your plugin has any external java dependencies, Gradle will attempt to
+// downloaded them from JCenter for anyone using the plugins DSL
+// so you should probably use JCenter for dependency resolution in your own
+// project.
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy() //not needed for Java plugins
+    // other dependencies that your plugin requires
+}
+
+// Unless overridden in the pluginBundle config DSL, the project version will
+// be used as your plugin version when publishing
+version = "0.0.2"
+group = "com.example.tsnt"
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+    website = 'https://github.com/tingshuonitiao/CreateActivityPlugin'
+    vcsUrl = 'https://github.com/tingshuonitiao/CreateActivityPlugin.git'
+    description = 'A plugin to create Activity!'
+    tags = ['Android', 'Create', 'Activity']
+
+    plugins {
+        greetingsPlugin {
+            id = 'com.example.tsnt.create_activity_plugin'
+            displayName = 'CreateActivityPlugin'
+        }
+    }
+}
