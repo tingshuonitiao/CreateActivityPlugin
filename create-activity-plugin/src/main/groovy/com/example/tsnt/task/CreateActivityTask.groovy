@@ -43,7 +43,11 @@ class CreateActivityTask extends DefaultTask {
         addToManifesByFileIo(activityName, packageName)
     }
 
-    // 创建Activiy对应的xml文件
+    /**
+     * 创建Activiy对应的xml文件
+     *
+     * @param activityName
+     */
     void generateXml(String activityName) {
         def xmlPath = project.projectDir.toString() + "/src/main/res/layout/"
         def fileName = "activity_" + activityName.toLowerCase() + ".xml"
@@ -51,7 +55,13 @@ class CreateActivityTask extends DefaultTask {
         generateFile(xmlPath, fileName, template)
     }
 
-    // 创建Activity对应的java文件
+    /**
+     * 创建Activity对应的java文件
+     *
+     * @param activityName
+     * @param packageName
+     * @param applicationId
+     */
     void generateClass(String activityName, String packageName, String applicationId) {
         def packagePath = applicationId.replace(".", "/") + "/" + packageName
         def activityPath = project.projectDir.toString() + "/src/main/java/" + packagePath + "/"
@@ -67,7 +77,12 @@ class CreateActivityTask extends DefaultTask {
         generateFile(activityPath, fileName, template)
     }
 
-    // 通过文件读写流的方式将新创建的Activity加入清单文件
+    /**
+     * 通过文件读写流的方式将新创建的Activity加入清单文件
+     *
+     * @param activityName
+     * @param packageName
+     */
     void addToManifesByFileIo(String activityName, String packageName) {
         FileReader reader
         FileWriter writer
@@ -106,7 +121,12 @@ class CreateActivityTask extends DefaultTask {
         }
     }
 
-    // 通过解析xml的方式将新创建的Activity加入清单文件
+    /**
+     * 通过解析xml的方式将新创建的Activity加入清单文件
+     *
+     * @param activityName
+     * @param packageName
+     */
     void addToManifestByParseDom(String activityName, String packageName) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -140,13 +160,25 @@ class CreateActivityTask extends DefaultTask {
         }
     }
 
-    // 加载模板
+    /**
+     * 加载模板
+     *
+     * @param template
+     * @param binding
+     * @return
+     */
     def makeTemplate(def template, def binding) {
         def engine = new groovy.text.GStringTemplateEngine()
         return engine.createTemplate(template).make(binding)
     }
 
-    // 根据模板生成文件
+    /**
+     * 根据模板生成文件
+     *
+     * @param path
+     * @param fileName
+     * @param template
+     */
     void generateFile(def path, def fileName, def template) {
         File dir = new File(path)
         if (!dir.exists()) {
